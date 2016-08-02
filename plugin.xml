@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated konstantinAnnotations -->
+      <package
+            uri="http://www2.compute.dtu.dk/annotations"
+            class="dk.dtu.konstantin.yawl.simulator.yawlannotations.YawlannotationsPackage"
+            genModel="model/konstantinAnnotations.genmodel"/>
+   </extension>
+
+
+
+
+   <extension
+         id="dk.dtu.konstantin.yawl.simulator"
+         name="YAWL Simulator"
+         point="org.pnml.tools.epnk.applications.applicationfactory">
+
+      <applicationfactory
+            class="dk.dtu.konstantin.yawl.simulator.app.YawlSimulatorFactory"
+            description="YAWL simulator for Konstantins Project">
+      </applicationfactory>
+   </extension>
+
+</plugin>
