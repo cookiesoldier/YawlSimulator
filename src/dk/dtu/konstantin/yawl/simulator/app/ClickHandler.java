@@ -126,25 +126,30 @@ public class ClickHandler implements IActionHandler {
 					return true;
 				}else if(null != targetTransition.getTypeOfJoin() && targetTransition.getTypeOfJoin().getText() == TypeOfT.OR){
 					//OR JOIN
+					
+					if (slArc.isSelected()) {
 
-					//Fejl her, man kan ikke v�lge dem fra
-					if(marking.containsKey(((Arc)slArc.getObject()).getSource())){
+						// Alle starter med at være true.
+						//skal kunne fra vælge en til der kun er 1 valgt tilbage
 						slArc.setSelected(false);
 						boolean allGood = false;
 						for (SelectArc tempArc : etTarget.getInArcs()) {
-							if (tempArc != null && tempArc.isSelected()) {
+							if (tempArc.isSelected()) {
 								allGood = true;
 							}
 						}
-						if (!allGood) {
+						if(!allGood){
 							slArc.setSelected(true);
 						}else{
 							slArc.setSelected(false);
 						}
-
-						application.update();
-						return true;
+					}else{
+						slArc.setSelected(true);
 					}
+
+
+					application.update();
+					return true;
 				}
 				else if(null == targetTransition.getTypeOfJoin()){
 					slArc.setSelected(true);
