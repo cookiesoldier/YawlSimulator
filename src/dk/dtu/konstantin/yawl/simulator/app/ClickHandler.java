@@ -18,6 +18,16 @@ import yawl.Place;
 import yawl.Transition;
 import yawl.TypeOfT;
 
+
+
+/**
+ * 
+ * 
+ * @author Konstantin
+ * @author Martin (Fixed a few errors)
+ * @generated NOT
+ *
+ */
 public class ClickHandler implements IActionHandler {
 
 	YawlSimulator application;
@@ -133,7 +143,7 @@ public class ClickHandler implements IActionHandler {
 						//skal kunne fra vælge en til der kun er 1 valgt tilbage
 						slArc.setSelected(false);
 						boolean allGood = false;
-						for (SelectArc tempArc : etTarget.getOutArcs()) {
+						for (SelectArc tempArc : etTarget.getInArcs()) {
 							if (tempArc.isSelected()) {
 								allGood = true;
 							}
