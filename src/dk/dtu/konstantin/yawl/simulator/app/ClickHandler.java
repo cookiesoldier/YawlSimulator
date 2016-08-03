@@ -107,8 +107,8 @@ public class ClickHandler implements IActionHandler {
 
 				}else if(null != targetTransition.getTypeOfJoin() && targetTransition.getTypeOfJoin().getText() == TypeOfT.AND){
 					boolean enabledFlag = true;
-					slArc.setSelected(false); // skal som udgangspunkt v�re false
-					// skal kun blive true hvis alle er true;
+					slArc.setSelected(false); // Should be false at the beginning
+					// Should only be true if all are true
 					for (SelectArc tempSlArc: etTarget.getInArcs()) {
 
 						Place place = ((Place)((Arc)tempSlArc.getObject()).getSource());
