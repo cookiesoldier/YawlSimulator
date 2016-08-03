@@ -18,16 +18,6 @@ import yawl.Place;
 import yawl.Transition;
 import yawl.TypeOfT;
 
-
-
-/**
- * 
- * 
- * @author Konstantin
- * @author Martin (Fixed a few errors)
- * @generated NOT
- *
- */
 public class ClickHandler implements IActionHandler {
 
 	YawlSimulator application;
@@ -136,30 +126,25 @@ public class ClickHandler implements IActionHandler {
 					return true;
 				}else if(null != targetTransition.getTypeOfJoin() && targetTransition.getTypeOfJoin().getText() == TypeOfT.OR){
 					//OR JOIN
-					
-					if (slArc.isSelected()) {
 
-						// Alle starter med at være true.
-						//skal kunne fra vælge en til der kun er 1 valgt tilbage
+					//Fejl her, man kan ikke v�lge dem fra
+					if(marking.containsKey(((Arc)slArc.getObject()).getSource())){
 						slArc.setSelected(false);
 						boolean allGood = false;
 						for (SelectArc tempArc : etTarget.getInArcs()) {
-							if (tempArc.isSelected()) {
+							if (tempArc != null && tempArc.isSelected()) {
 								allGood = true;
 							}
 						}
-						if(!allGood){
+						if (!allGood) {
 							slArc.setSelected(true);
 						}else{
 							slArc.setSelected(false);
 						}
-					}else{
-						slArc.setSelected(true);
+
+						application.update();
+						return true;
 					}
-
-
-					application.update();
-					return true;
 				}
 				else if(null == targetTransition.getTypeOfJoin()){
 					slArc.setSelected(true);
