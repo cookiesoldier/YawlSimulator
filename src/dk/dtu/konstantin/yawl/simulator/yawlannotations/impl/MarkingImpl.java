@@ -27,7 +27,7 @@ import org.pnml.tools.epnk.annotations.netannotations.impl.ObjectAnnotationImpl;
  *
  * @generated
  */
-public class MarkingImpl extends ObjectAnnotationImpl implements Mar	king {
+public class MarkingImpl extends ObjectAnnotationImpl implements Marking {
 	/**
 	 * The default value of the '{@link #getValue() <em>Value</em>}' attribute.
 	 * <!-- begin-user-doc -->
