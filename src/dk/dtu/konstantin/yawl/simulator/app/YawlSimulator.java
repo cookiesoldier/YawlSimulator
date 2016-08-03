@@ -10,6 +10,7 @@ import org.pnml.tools.epnk.annotations.netannotations.NetAnnotation;
 import org.pnml.tools.epnk.annotations.netannotations.NetannotationsFactory;
 import org.pnml.tools.epnk.annotations.netannotations.ObjectAnnotation;
 import org.pnml.tools.epnk.applications.ApplicationWithUIManager;
+import org.pnml.tools.epnk.applications.ui.ApplicationUIManager;
 import org.pnml.tools.epnk.helpers.FlatAccess;
 import org.pnml.tools.epnk.pnmlcoremodel.PetriNet;
 import org.pnml.tools.epnk.pnmlcoremodel.PlaceNode;
@@ -32,6 +33,13 @@ public class YawlSimulator extends ApplicationWithUIManager {
 	public YawlSimulator(PetriNet petrinet) {
 		super(petrinet);
 		// TODO Auto-generated constructor stub
+		
+		//Missing stuff here
+		ApplicationUIManager manager = this.getPresentationManager();
+		
+		manager.addActionHandler(new ClickHandler(this));
+		manager.addPresentationHandler(new AnnotationGraphics());
+		
 	}
 
 
@@ -135,10 +143,10 @@ public class YawlSimulator extends ApplicationWithUIManager {
 		return markings;
 	}
 	
-	
-	
 	public NetAnnotation computeAnnotation(FlatAccess flatNet, Map<Place, Integer> marking) {
 		NetAnnotation annotation = NetannotationsFactory.eINSTANCE.createNetAnnotation();
+		
+		
 		for (Place place: marking.keySet()) {
 			int value = marking.get(place);
 			// S�tter markering for hvor mange tokens der er p� en place
@@ -160,7 +168,7 @@ public class YawlSimulator extends ApplicationWithUIManager {
 			}
 
 		}
-
+		//Check if a given transition can fire, by checking each of the types AND,OR,XOR
 		for (Object transition: flatNet.getTransitions()) {
 
 			if (transition instanceof Transition) {
@@ -273,7 +281,10 @@ public class YawlSimulator extends ApplicationWithUIManager {
 						if(!transTemp.getIn().isEmpty()){
 							boolean allHasToken = true;
 							ArrayList<SelectArc> arcsEnabled = new ArrayList<SelectArc>();
-							
+							/*
+							 * This checks if a given arc has enough tokens on its place, if so it will be set to true, else it will set the allHasToken to
+							 * false and the outcome will be false/ no go
+							 */
 							for(Object arc: transTemp.getIn()){
 								Arc arcTemp = ((Arc)arc);
 								Place place = (Place) arcTemp.getSource();
@@ -289,6 +300,8 @@ public class YawlSimulator extends ApplicationWithUIManager {
 									slArc.setSelected(true);
 								}
 							}
+							
+							//Maybe redundant??
 							if(allHasToken){
 								for (SelectArc slArc : arcsEnabled) {
 									if(slArc != null){
@@ -302,24 +315,6 @@ public class YawlSimulator extends ApplicationWithUIManager {
 
 					}
 					
-					// nothing to do here either
-					/*
-					if(null == transTemp.getTypeOfSplit()){
-
-						Arc arcTemp = (Arc) transTemp.getOut().get(0);
-						SelectArc slArc = YawlannotationsFactory.eINSTANCE.createSelectArc();
-						slArc.setObject(arcTemp);
-						slArc.setSourceTransition(transitionAnnotation);
-						annotation.getObjectAnnotations().add(slArc);
-						slArc.setSelected(true);
-
-
-
-
-					}
-					*/
-
-
 				}
 			}
 		}

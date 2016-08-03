@@ -14,9 +14,6 @@
             genModel="model/konstantinAnnotations.genmodel"/>
    </extension>
 
-
-
-
    <extension
          id="dk.dtu.konstantin.yawl.simulator"
          name="YAWL Simulator"
