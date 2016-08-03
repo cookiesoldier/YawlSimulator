@@ -106,6 +106,7 @@ public class ClickHandler implements IActionHandler {
 					return true;
 
 				}else if(null != targetTransition.getTypeOfJoin() && targetTransition.getTypeOfJoin().getText() == TypeOfT.AND){
+					//AND JOIN
 					boolean enabledFlag = true;
 					slArc.setSelected(false); // Should be false at the beginning
 					// Should only be true if all are true
@@ -124,21 +125,31 @@ public class ClickHandler implements IActionHandler {
 					application.update();
 					return true;
 				}else if(null != targetTransition.getTypeOfJoin() && targetTransition.getTypeOfJoin().getText() == TypeOfT.OR){
-					if(marking.containsKey(((Arc)slArc.getObject()).getSource())){
-						slArc.setSelected(true);
+					//OR JOIN
+					
+					if (slArc.isSelected()) {
+
+						// Alle starter med at være true.
+						//skal kunne fra vælge en til der kun er 1 valgt tilbage
+						slArc.setSelected(false);
 						boolean allGood = false;
-						for (SelectArc tempArc : etTarget.getInArcs()) {
-							if (tempArc != null && tempArc.isSelected()) {
+						for (SelectArc tempArc : etTarget.getOutArcs()) {
+							if (tempArc.isSelected()) {
 								allGood = true;
 							}
 						}
-						if (!allGood) {
+						if(!allGood){
 							slArc.setSelected(true);
+						}else{
+							slArc.setSelected(false);
 						}
-
-						application.update();
-						return true;
+					}else{
+						slArc.setSelected(true);
 					}
+
+
+					application.update();
+					return true;
 				}
 				else if(null == targetTransition.getTypeOfJoin()){
 					slArc.setSelected(true);
@@ -164,7 +175,7 @@ public class ClickHandler implements IActionHandler {
 					return true;
 				}
 				else if(null != sourceTransition.getOut() && sourceTransition.getTypeOfSplit().getText() == TypeOfT.OR){
-
+					//OR split
 					if (slArc.isSelected()) {
 
 						// Alle starter med at være true.
