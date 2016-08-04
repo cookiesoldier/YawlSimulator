@@ -147,27 +147,7 @@ public class YawlSimulator extends ApplicationWithUIManager {
 		NetAnnotation annotation = NetannotationsFactory.eINSTANCE.createNetAnnotation();
 		
 		
-		for (Place place: marking.keySet()) {
-			int value = marking.get(place);
-			// S�tter markering for hvor mange tokens der er p� en place
-			if (value > 0) {
-				Marking markingAnnotation = YawlannotationsFactory.eINSTANCE.createMarking();
-				markingAnnotation.setValue(value);
-				markingAnnotation.setObject(place);
-				annotation.getObjectAnnotations().add(markingAnnotation);
-
-				// also annotate reference places with the current marking of the place
-				for (RefPlace ref: flatNet.getRefPlaces(place)) {
-					// Place temp = ((Place)ref);
-					Marking markingAnnotationRef = YawlannotationsFactory.eINSTANCE.createMarking();
-					markingAnnotationRef.setValue(value);
-					markingAnnotationRef.setObject(ref);
-					annotation.getObjectAnnotations().add(markingAnnotationRef);	
-				}
-
-			}
-
-		}
+		computeAnnotationPlaces(flatNet, marking, annotation);
 		//Check if a given transition can fire, by checking each of the types AND,OR,XOR
 		for (Object transition: flatNet.getTransitions()) {
 
@@ -203,7 +183,7 @@ public class YawlSimulator extends ApplicationWithUIManager {
 
 									SelectArc slArc = YawlannotationsFactory.eINSTANCE.createSelectArc();
 									slArc.setObject(arcTemp);
-
+ 
 									slArc.setTargetTransition(transitionAnnotation);
 									annotation.getObjectAnnotations().add(slArc);
 									if(!selectFlag){
@@ -320,11 +300,43 @@ public class YawlSimulator extends ApplicationWithUIManager {
 		}
 		return annotation;
 	}
+
+
+	private void computeAnnotationPlaces(FlatAccess flatNet, Map<Place, Integer> marking, NetAnnotation annotation) {
+		for (Place place: marking.keySet()) {
+			
+			if(place instanceof Place){
+				
+			int value = marking.get(place);
+			// S�tter markering for hvor mange tokens der er p� en place
+			if (value > 0) {
+				Marking markingAnnotation = YawlannotationsFactory.eINSTANCE.createMarking();
+				markingAnnotation.setValue(value);
+				markingAnnotation.setObject(place);
+				annotation.getObjectAnnotations().add(markingAnnotation);
+
+				// also annotate reference places with the current marking of the place
+				for (RefPlace ref: flatNet.getRefPlaces(place)) {
+					// Place temp = ((Place)ref);
+					Marking markingAnnotationRef = YawlannotationsFactory.eINSTANCE.createMarking();
+					markingAnnotationRef.setValue(value);
+					markingAnnotationRef.setObject(ref);
+					annotation.getObjectAnnotations().add(markingAnnotationRef);	
+				}
+
+			}
+
+			}
+		}
+	}
 	
 	Map<Place, Integer> fireTransition(FlatAccess flatNet, Map<Place, Integer> marking1, Transition transition, ArrayList<SelectArc> inArcs,ArrayList<SelectArc> outArcs) {
 		Map<Place,Integer> marking2 = new HashMap<Place, Integer>();
 		for (Place place: marking1.keySet()) {
+			if(place instanceof Place){
+				
 			marking2.put(place, marking1.put(place, marking1.get(place)));
+			}
 		}
 		int available = 0;
 		boolean normalArcSelected = false;
