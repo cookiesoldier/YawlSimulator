@@ -305,6 +305,35 @@ public class YawlSimulator extends ApplicationWithUIManager {
 
 					}
 					
+					if(null != transTemp.getTypeOfSplit() && transTemp.getTypeOfSplit().getText() == TypeOfT.SINGLE){
+						if(!transTemp.getIn().isEmpty()){
+							for(Object arc: transTemp.getIn()){
+								Arc arcTemp = ((Arc)arc);
+								SelectArc slArc = YawlannotationsFactory.eINSTANCE.createSelectArc();
+								slArc.setObject(arcTemp);
+								slArc.setSourceTransition(transitionAnnotation);
+								annotation.getObjectAnnotations().add(slArc);
+								slArc.setSelected(true);
+							
+						}	
+
+					}
+					}	
+					if(null != transTemp.getTypeOfSplit() && transTemp.getTypeOfSplit().getText() == TypeOfT.SINGLE){
+						if(!transTemp.getOut().isEmpty()){
+							for(Object arc: transTemp.getOut()){
+								Arc arcTemp = ((Arc)arc);
+								SelectArc slArc = YawlannotationsFactory.eINSTANCE.createSelectArc();
+								slArc.setObject(arcTemp);
+								slArc.setSourceTransition(transitionAnnotation);
+								annotation.getObjectAnnotations().add(slArc);
+								slArc.setSelected(true);
+							
+						}	
+
+					}
+					}
+					
 				}
 			}
 		}

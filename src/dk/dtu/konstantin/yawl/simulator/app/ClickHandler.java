@@ -124,7 +124,30 @@ public class ClickHandler implements IActionHandler {
 					}
 					application.update();
 					return true;
-				}else if(null != targetTransition.getTypeOfJoin() && targetTransition.getTypeOfJoin().getText() == TypeOfT.OR){
+				}
+				
+				else if(null != targetTransition.getTypeOfJoin() && targetTransition.getTypeOfJoin().getText() == TypeOfT.SINGLE){
+					//SINGLE JOIN
+					boolean enabledFlag = true;
+					slArc.setSelected(false); // Should be false at the beginning
+					// Should only be true if all are true
+					for (SelectArc tempSlArc: etTarget.getInArcs()) {
+
+						Place place = ((Place)((Arc)tempSlArc.getObject()).getSource());
+						if(marking.getOrDefault(place, -1) < 1){
+							enabledFlag = false;
+						}
+					}
+					if(enabledFlag){
+						for (SelectArc tempSlArc : etTarget.getInArcs()) {
+							tempSlArc.setSelected(true);
+						}	
+					}
+					application.update();
+					return true;
+				}
+				
+				else if(null != targetTransition.getTypeOfJoin() && targetTransition.getTypeOfJoin().getText() == TypeOfT.OR){
 					//OR JOIN
 					
 					if (slArc.isSelected()) {
