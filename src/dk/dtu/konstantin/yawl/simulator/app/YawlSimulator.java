@@ -364,10 +364,12 @@ public class YawlSimulator extends ApplicationWithUIManager {
 				//fejl her!
 				
 				normalArcSelected = true;
-			}else if(arc.getType().getText() == TypeOfA.RESET){
+			}else if(arc.getType() != null &&arc.getType().getText() == TypeOfA.RESET){
 				resetArcSelected = true;
 			}
-			available = marking1.get(source);
+			if(marking1.get(source) != null){
+				available = marking1.get(source);
+			}
 		}
 
 		//Fjerner markings fra normale arcs
