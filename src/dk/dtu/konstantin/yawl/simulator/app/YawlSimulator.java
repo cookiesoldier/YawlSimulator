@@ -26,6 +26,7 @@ import yawl.TypeOfC;
 import yawl.TypeOfT;
 import yawl.Transition;
 import yawl.TypeOfA;
+import yawl.TypeOfArc;
 import yawl.Place;
 
 public class YawlSimulator extends ApplicationWithUIManager {
@@ -179,19 +180,24 @@ public class YawlSimulator extends ApplicationWithUIManager {
 								// check type
 								Arc arcTemp = ((Arc)arc);
 								Place place = ((Place) flatNet.resolve((PlaceNode) arcTemp.getSource()));
+								
+
+								SelectArc slArc = YawlannotationsFactory.eINSTANCE.createSelectArc();
+								slArc.setObject(arcTemp);
+
+								slArc.setTargetTransition(transitionAnnotation);
+								annotation.getObjectAnnotations().add(slArc);
 								if (marking.getOrDefault(place, -1) > 0) {
 
-									SelectArc slArc = YawlannotationsFactory.eINSTANCE.createSelectArc();
-									slArc.setObject(arcTemp);
- 
-									slArc.setTargetTransition(transitionAnnotation);
-									annotation.getObjectAnnotations().add(slArc);
 									if(!selectFlag){
 										slArc.setSelected(true);
 										selectFlag = true;
 									}else{
 										slArc.setSelected(false);
 									}
+								}else if(arcTemp.getType().getText() == TypeOfA.RESET){
+									slArc.setSelected(true);
+									
 								}
 								
 
@@ -244,12 +250,16 @@ public class YawlSimulator extends ApplicationWithUIManager {
 							for(Object arc: transTemp.getIn()){
 								Arc arcTemp = ((Arc)arc);
 								SelectArc slArc = YawlannotationsFactory.eINSTANCE.createSelectArc();
+								
+								
 								slArc.setObject(arcTemp);
 								slArc.setTargetTransition(transitionAnnotation);
 								annotation.getObjectAnnotations().add(slArc);
 								Place place =((Place) ((Arc)slArc.getObject()).getSource());
 								if(marking.getOrDefault(place, -1) > 0){
 									slArc.setSelected(true);
+								}else if(arcTemp.getType().getText() == TypeOfA.RESET){
+									slArc.setSelected(true);									
 								}
 							}
 						} 
@@ -340,22 +350,27 @@ public class YawlSimulator extends ApplicationWithUIManager {
 		}
 		int available = 0;
 		boolean normalArcSelected = false;
+		boolean resetArcSelected = false;
 		// GÃ¥r igennem arcs og tjekker for om det er en resetArc,
 		// hvis det er skal der fjernes markings
 		for(SelectArc slArc : inArcs){
 			Arc arc = (Arc)slArc.getObject();
 			Place source = ((Place) ((Arc)slArc.getObject()).getSource());
-			available = marking1.get(source);
+		
 			if(arc.getType() != null){
 				marking1.put(source, 0);
 
-
-			}if(null == arc.getType() && marking2.getOrDefault(source, -1) >0){
+			}if((null == arc.getType() || arc.getType().getText() == TypeOfA.NORMAL )&& marking2.getOrDefault(source, -1) >0){
+				//fejl her!
+				
 				normalArcSelected = true;
+			}else if(arc.getType().getText() == TypeOfA.RESET){
+				resetArcSelected = true;
 			}
+			available = marking1.get(source);
 		}
 
-
+		//Fjerner markings fra normale arcs
 		for (SelectArc arc: inArcs) {
 
 			Arc slArc  = (Arc) arc.getObject();
@@ -369,6 +384,8 @@ public class YawlSimulator extends ApplicationWithUIManager {
 
 			marking2.put(source, available-needed);
 		}
+		
+		//Puts the markings on the outgoing places.
 		if(normalArcSelected){
 			for (SelectArc arc: outArcs) {
 				if (arc != null) {
@@ -385,6 +402,23 @@ public class YawlSimulator extends ApplicationWithUIManager {
 					}
 				}
 			}
+		}else if(resetArcSelected){
+			for (SelectArc arc: outArcs) {
+				if (arc != null) {
+					Arc slArc = (Arc)arc.getObject();
+
+					Place target  =((Place) slArc.getTarget());
+					if (target instanceof Place) {
+						available = 0;
+						if (marking1.containsKey(target)) {
+							available = marking1.get(target);
+						}
+						int provided = 1; 
+						marking2.put(target, available+provided);
+					}
+				}
+			}
+			
 		}
 
 		return marking2;
@@ -410,11 +444,16 @@ public class YawlSimulator extends ApplicationWithUIManager {
 								}
 							}
 						}
+						// måske ikke helt korrekt?
+					}else if (!(ptArc.getType().getText() == TypeOfA.RESET)){
+						return false;
+						
 					}
 				}
 			}
 			return true;
-		} else {
+		}
+		else {
 			for (Object arc: flatNet.getIn(transition)) {
 				if (arc instanceof Arc) {
 					Arc ptArc = (Arc) arc;
@@ -429,6 +468,9 @@ public class YawlSimulator extends ApplicationWithUIManager {
 								}
 							}
 						}
+					}else if (ptArc.getType().getText() == TypeOfA.RESET){
+						return true;
+						
 					}
 				}
 			}
