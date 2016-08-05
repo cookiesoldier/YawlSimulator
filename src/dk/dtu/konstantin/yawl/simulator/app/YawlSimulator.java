@@ -258,7 +258,7 @@ public class YawlSimulator extends ApplicationWithUIManager {
 								Place place =((Place) ((Arc)slArc.getObject()).getSource());
 								if(marking.getOrDefault(place, -1) > 0){
 									slArc.setSelected(true);
-								}else if(arcTemp.getType().getText() == TypeOfA.RESET){
+								}else if(arcTemp.getType() != null &&arcTemp.getType().getText() == TypeOfA.RESET){
 									slArc.setSelected(true);									
 								}
 							}
