@@ -161,7 +161,6 @@ public class YawlSimulator extends ApplicationWithUIManager {
 					annotation.getObjectAnnotations().add(transitionAnnotation); // Transition f�r farve
 					if( null == transTemp.getTypeOfJoin()){ // Single join
 						if(!transTemp.getIn().isEmpty()){
-							// not needed in this case
 							for(Object arc: transTemp.getIn()){
 								Arc arcTemp = ((Arc)arc);
 								SelectArc slArc = YawlannotationsFactory.eINSTANCE.createSelectArc();
@@ -170,6 +169,16 @@ public class YawlSimulator extends ApplicationWithUIManager {
 								annotation.getObjectAnnotations().add(slArc);
 								slArc.setSelected(true);
 							}
+						}
+					}
+					if(null == transTemp.getTypeOfSplit()){
+						for(Object arc: transTemp.getOut()){
+							Arc arcTemp = ((Arc)arc);
+							SelectArc slArc = YawlannotationsFactory.eINSTANCE.createSelectArc();
+							slArc.setObject(arcTemp);
+							slArc.setSourceTransition(transitionAnnotation);
+							annotation.getObjectAnnotations().add(slArc);
+							slArc.setSelected(true);
 						}
 					}
 
