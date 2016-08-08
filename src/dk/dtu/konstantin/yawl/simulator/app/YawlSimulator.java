@@ -195,7 +195,7 @@ public class YawlSimulator extends ApplicationWithUIManager {
 									}else{
 										slArc.setSelected(false);
 									}
-								}else if(arcTemp.getType().getText() == TypeOfA.RESET){
+								}else if(arcTemp.getType() != null && arcTemp.getType().getText() == TypeOfA.RESET){
 									slArc.setSelected(true);
 									
 								}
