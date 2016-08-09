@@ -26,7 +26,6 @@ import yawl.TypeOfC;
 import yawl.TypeOfT;
 import yawl.Transition;
 import yawl.TypeOfA;
-import yawl.TypeOfArc;
 import yawl.Place;
 
 public class YawlSimulator extends ApplicationWithUIManager {
