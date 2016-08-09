@@ -237,7 +237,7 @@ public class YawlSimulator extends ApplicationWithUIManager {
 					}
 					
 					// not checked below
-					if(null != transTemp.getTypeOfSplit() && transTemp.getTypeOfSplit().getText() == TypeOfT.OR || null != transTemp.getTypeOfSplit() && ((Transition)transition).getTypeOfSplit().getText() == TypeOfT.AND){
+					if(null != transTemp.getTypeOfSplit() && transTemp.getTypeOfSplit().getText() == TypeOfT.OR || null != transTemp.getTypeOfSplit() && ((Transition)transition).getTypeOfSplit().getText() == TypeOfT.AND || null != transTemp.getTypeOfSplit() && ((Transition)transition).getTypeOfSplit().getText() == TypeOfT.SINGLE){
 						if(!transTemp.getOut().isEmpty()){
 							for(Object arc: transTemp.getOut()){
 								Arc arcTemp = ((Arc)arc);
@@ -314,7 +314,45 @@ public class YawlSimulator extends ApplicationWithUIManager {
 
 					}
 					
-					if(null != transTemp.getTypeOfSplit() && transTemp.getTypeOfSplit().getText() == TypeOfT.SINGLE){
+					if(null != transTemp.getTypeOfJoin() && ((Transition)transition).getTypeOfJoin().getText() == TypeOfT.SINGLE){
+						if(!transTemp.getIn().isEmpty()){
+							boolean allHasToken = true;
+							ArrayList<SelectArc> arcsEnabled = new ArrayList<SelectArc>();
+							/*
+							 * This checks if a given arc has enough tokens on its place, if so it will be set to true, else it will set the allHasToken to
+							 * false and the outcome will be false/ no go
+							 */
+							for(Object arc: transTemp.getIn()){
+								Arc arcTemp = ((Arc)arc);
+								Place place = (Place) arcTemp.getSource();
+								SelectArc slArc = YawlannotationsFactory.eINSTANCE.createSelectArc();
+								slArc.setObject(arcTemp);
+								slArc.setTargetTransition(transitionAnnotation);
+								arcsEnabled.add(slArc);
+								slArc.setSelected(false); // S�tter den til false, for at v�re sikker p� den er false, hvis ikke alle er gode
+								annotation.getObjectAnnotations().add(slArc);
+								if(marking.getOrDefault(place, -1) < 1 && null ==arcTemp.getType()){
+									allHasToken = false;
+								}else if(marking.getOrDefault(place, -1) >= 1 && null !=arcTemp.getType()){
+									slArc.setSelected(true);
+								}
+							}
+							
+							//Maybe redundant??
+							if(allHasToken){
+								for (SelectArc slArc : arcsEnabled) {
+									if(slArc != null){
+										slArc.setSelected(true);
+									}
+								}
+							}
+
+
+						}	
+
+					}
+					
+					/*if(null != transTemp.getTypeOfSplit() && transTemp.getTypeOfSplit().getText() == TypeOfT.SINGLE){
 						if(!transTemp.getIn().isEmpty()){
 							for(Object arc: transTemp.getIn()){
 								Arc arcTemp = ((Arc)arc);
@@ -341,11 +379,45 @@ public class YawlSimulator extends ApplicationWithUIManager {
 						}	
 
 					}
+					}*/
+					
+				
+					/*if(null != transTemp.getTypeOfJoin() && transTemp.getTypeOfJoin().getText() == TypeOfT.SINGLE){
+						if(!transTemp.getIn().isEmpty()){
+							for(Object arc: transTemp.getIn()){
+								Arc arcTemp = ((Arc)arc);
+								SelectArc slArc = YawlannotationsFactory.eINSTANCE.createSelectArc();
+								slArc.setObject(arcTemp);
+								slArc.setSourceTransition(transitionAnnotation);
+								annotation.getObjectAnnotations().add(slArc);
+								slArc.setSelected(true);
+							
+						}	
+
 					}
+					}	
+					if(null != transTemp.getTypeOfJoin() && transTemp.getTypeOfJoin().getText() == TypeOfT.SINGLE){
+						if(!transTemp.getOut().isEmpty()){
+							for(Object arc: transTemp.getOut()){
+								Arc arcTemp = ((Arc)arc);
+								SelectArc slArc = YawlannotationsFactory.eINSTANCE.createSelectArc();
+								slArc.setObject(arcTemp);
+								slArc.setSourceTransition(transitionAnnotation);
+								annotation.getObjectAnnotations().add(slArc);
+								slArc.setSelected(true);
+							
+						}	
+
+					}
+					}*/
+					
 					
 				}
 			}
 		}
+
+			
+		
 		return annotation;
 	}
 
