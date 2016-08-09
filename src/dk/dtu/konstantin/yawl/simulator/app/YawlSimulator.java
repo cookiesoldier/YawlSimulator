@@ -469,7 +469,7 @@ public class YawlSimulator extends ApplicationWithUIManager {
 		// TODO this does not work yet if there is more than one arc between the same
 		//      place and the same transition!
 		
-		if(transition.getTypeOfJoin() == null || transition.getTypeOfJoin().getText() == TypeOfT.AND) {
+		if(transition.getTypeOfJoin() == null || transition.getTypeOfJoin().getText() == TypeOfT.AND || transition.getTypeOfJoin().getText() == TypeOfT.SINGLE) {
 			for (Object arc: flatNet.getIn(transition)) {
 				if (arc instanceof Arc) {
 					Arc ptArc = (Arc) arc;
@@ -497,7 +497,7 @@ public class YawlSimulator extends ApplicationWithUIManager {
 			for (Object arc: flatNet.getIn(transition)) {
 				if (arc instanceof Arc) {
 					Arc ptArc = (Arc) arc;
-					if (ptArc.getType() == null || ptArc.getType().getText() == TypeOfA.NORMAL) {
+					if (ptArc.getType() == null || ptArc.getType().getText() == TypeOfA.NORMAL ) {
 						Object source = ptArc.getSource();
 						if (source instanceof PlaceNode) {
 							source = flatNet.resolve((PlaceNode) source);
