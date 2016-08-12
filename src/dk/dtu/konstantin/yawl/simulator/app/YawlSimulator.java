@@ -28,6 +28,13 @@ import yawl.Transition;
 import yawl.TypeOfA;
 import yawl.Place;
 
+/**
+ * @author Konstantin
+ * @author Martin
+ * @author Thomas
+ *
+ */
+
 public class YawlSimulator extends ApplicationWithUIManager {
 
 	public YawlSimulator(PetriNet petrinet) {
@@ -236,7 +243,7 @@ public class YawlSimulator extends ApplicationWithUIManager {
 					}
 					
 					// not checked below
-					if(null != transTemp.getTypeOfSplit() && transTemp.getTypeOfSplit().getText() == TypeOfT.OR || null != transTemp.getTypeOfSplit() && ((Transition)transition).getTypeOfSplit().getText() == TypeOfT.AND || null != transTemp.getTypeOfSplit() && ((Transition)transition).getTypeOfSplit().getText() == TypeOfT.SINGLE){
+					if(null != transTemp.getTypeOfSplit() && ((Transition)transition).getTypeOfSplit().getText() == TypeOfT.AND){
 						if(!transTemp.getOut().isEmpty()){
 							for(Object arc: transTemp.getOut()){
 								Arc arcTemp = ((Arc)arc);
@@ -345,72 +352,8 @@ public class YawlSimulator extends ApplicationWithUIManager {
 									}
 								}
 							}
-
-
 						}	
-
 					}
-					
-					/*if(null != transTemp.getTypeOfSplit() && transTemp.getTypeOfSplit().getText() == TypeOfT.SINGLE){
-						if(!transTemp.getIn().isEmpty()){
-							for(Object arc: transTemp.getIn()){
-								Arc arcTemp = ((Arc)arc);
-								SelectArc slArc = YawlannotationsFactory.eINSTANCE.createSelectArc();
-								slArc.setObject(arcTemp);
-								slArc.setSourceTransition(transitionAnnotation);
-								annotation.getObjectAnnotations().add(slArc);
-								slArc.setSelected(true);
-							
-						}	
-
-					}
-					}	
-					if(null != transTemp.getTypeOfSplit() && transTemp.getTypeOfSplit().getText() == TypeOfT.SINGLE){
-						if(!transTemp.getOut().isEmpty()){
-							for(Object arc: transTemp.getOut()){
-								Arc arcTemp = ((Arc)arc);
-								SelectArc slArc = YawlannotationsFactory.eINSTANCE.createSelectArc();
-								slArc.setObject(arcTemp);
-								slArc.setSourceTransition(transitionAnnotation);
-								annotation.getObjectAnnotations().add(slArc);
-								slArc.setSelected(true);
-							
-						}	
-
-					}
-					}*/
-					
-				
-					/*if(null != transTemp.getTypeOfJoin() && transTemp.getTypeOfJoin().getText() == TypeOfT.SINGLE){
-						if(!transTemp.getIn().isEmpty()){
-							for(Object arc: transTemp.getIn()){
-								Arc arcTemp = ((Arc)arc);
-								SelectArc slArc = YawlannotationsFactory.eINSTANCE.createSelectArc();
-								slArc.setObject(arcTemp);
-								slArc.setSourceTransition(transitionAnnotation);
-								annotation.getObjectAnnotations().add(slArc);
-								slArc.setSelected(true);
-							
-						}	
-
-					}
-					}	
-					if(null != transTemp.getTypeOfJoin() && transTemp.getTypeOfJoin().getText() == TypeOfT.SINGLE){
-						if(!transTemp.getOut().isEmpty()){
-							for(Object arc: transTemp.getOut()){
-								Arc arcTemp = ((Arc)arc);
-								SelectArc slArc = YawlannotationsFactory.eINSTANCE.createSelectArc();
-								slArc.setObject(arcTemp);
-								slArc.setSourceTransition(transitionAnnotation);
-								annotation.getObjectAnnotations().add(slArc);
-								slArc.setSelected(true);
-							
-						}	
-
-					}
-					}*/
-					
-					
 				}
 			}
 		}
@@ -534,7 +477,6 @@ public class YawlSimulator extends ApplicationWithUIManager {
 
 		return marking2;
 	}
-
 
 	boolean enabled(FlatAccess flatNet, Map<Place, Integer> marking, Transition transition) {
 		// TODO this does not work yet if there is more than one arc between the same

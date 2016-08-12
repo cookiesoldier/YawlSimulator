@@ -18,6 +18,12 @@ import yawl.Place;
 import yawl.Transition;
 import yawl.TypeOfT;
 
+/**
+ * 
+ * @author Konstantin
+ *
+ */
+
 public class ClickHandler implements IActionHandler {
 
 	YawlSimulator application;
@@ -149,9 +155,7 @@ public class ClickHandler implements IActionHandler {
 				
 				else if(null != targetTransition.getTypeOfJoin() && targetTransition.getTypeOfJoin().getText() == TypeOfT.OR){
 					//OR JOIN
-					
 					if (slArc.isSelected()) {
-
 						// Alle starter med at være true.
 						//skal kunne fra vælge en til der kun er 1 valgt tilbage
 						slArc.setSelected(false);
@@ -169,8 +173,6 @@ public class ClickHandler implements IActionHandler {
 					}else{
 						slArc.setSelected(true);
 					}
-
-
 					application.update();
 					return true;
 				}
