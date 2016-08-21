@@ -118,31 +118,17 @@ public class YawlSimulator extends ApplicationWithUIManager {
 	
 	public Map<Place, Integer> computeInitialMarking(FlatAccess flatNet) {
 		Map<Place,Integer> markings = new HashMap<Place,Integer>();
-		// Place startPlace = null; //TODO find det
-		// Place defaultPlace = null;
 		
-		// flatNet.getPlaces(); alternative 
-		// Place endPlace = null;
 
 		Iterator<EObject> it = getPetrinet().eAllContents();
 
 		while(it.hasNext()){
 			Object obj = it.next();  
 			if(obj instanceof Place){
-				/* if(null == ((Place)obj).getType()){
-					defaultPlace = (Place) obj;
-					// Marking marking = YawlannotationsFactory.eINSTANCE.createMarking();		
-					// marking.setObject(defaultPlace);
-					// marking.setValue(0);
-					markings.put(defaultPlace, marking.getValue());
-				}
-				else */ 
+			
 				if(((Place)obj).getType() != null &&
 						((Place)obj).getType().getText() == TypeOfC.START){
 					Place  startPlace = (Place) obj;
-					// Marking marking = YawlannotationsFactory.eINSTANCE.createMarking();		
-					// marking.setObject(startPlace);
-					// marking.setValue(1);
 					markings.put(startPlace, 1);
 				} 
 			}  
@@ -243,7 +229,7 @@ public class YawlSimulator extends ApplicationWithUIManager {
 					}
 					
 					// not checked below
-					if(null != transTemp.getTypeOfSplit() && ((Transition)transition).getTypeOfSplit().getText() == TypeOfT.AND){
+					if((null != transTemp.getTypeOfSplit() && ((Transition)transition).getTypeOfSplit().getText() == TypeOfT.AND)|| (null != transTemp.getTypeOfSplit() && ((Transition)transition).getTypeOfSplit().getText() == TypeOfT.SINGLE)){
 						if(!transTemp.getOut().isEmpty()){
 							for(Object arc: transTemp.getOut()){
 								Arc arcTemp = ((Arc)arc);
