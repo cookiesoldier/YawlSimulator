@@ -363,7 +363,6 @@ public class YawlSimulator extends ApplicationWithUIManager {
 		return annotation;
 	}
 
-
 	private void computeAnnotationPlaces(FlatAccess flatNet, Map<Place, Integer> marking, NetAnnotation annotation) {
 		for (Place place: marking.keySet()) {
 			
