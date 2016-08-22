@@ -244,6 +244,21 @@ public class YawlSimulator extends ApplicationWithUIManager {
 
 					}
 
+					
+					if((null != transTemp.getTypeOfSplit() && ((Transition)transition).getTypeOfSplit().getText() == TypeOfT.OR)){
+						if(!transTemp.getOut().isEmpty()){
+							for(Object arc: transTemp.getOut()){
+								Arc arcTemp = ((Arc)arc);
+								SelectArc slArc = YawlannotationsFactory.eINSTANCE.createSelectArc();
+								slArc.setObject(arcTemp);
+								slArc.setSourceTransition(transitionAnnotation);
+								annotation.getObjectAnnotations().add(slArc);
+								slArc.setSelected(true);
+
+							}
+						} 
+
+					}
 
 					// dont need these annotations in this case!
 					if(null != transTemp.getTypeOfJoin() && transTemp.getTypeOfJoin().getText() == TypeOfT.OR){
